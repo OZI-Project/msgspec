@@ -208,6 +208,9 @@ extend-exclude = [
     "test_JSONTestSuite.py",
     "conf.py",
 ]
+line-length = 88
+
+[tool.ruff.lint]
 ignore = [
     "E721",
     "E741",
@@ -250,7 +253,7 @@ max-complexity = 6
 line-ending = "lf"
 quote-style = "single"
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 combine-as-imports = true
 force-single-line = false
 
