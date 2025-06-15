@@ -45,17 +45,49 @@ if sys.version_info >= (3, 13):
 
     def _eval_type(t, globalns, localns):
         return typing._eval_type(t, globalns, localns, ())
+elif sys.version_info < (3, 10):
+
+    def _eval_type(t, globalns, localns):
+        try:
+            return typing._eval_type(t, globalns, localns)
+        except TypeError as e:
+            try:
+                from eval_type_backport import eval_type_backport
+            except ImportError:
+                raise TypeError(
+                    f"Unable to evaluate type annotation {t.__forward_arg__!r}. If you are making use "
+                    "of the new typing syntax (unions using `|` since Python 3.10 or builtins subscripting "
+                    "since Python 3.9), you should either replace the use of new syntax with the existing "
+                    "`typing` constructs or install the `eval_type_backport` package."
+                ) from e
+
+            return eval_type_backport(
+                t,
+                globalns,
+                localns,
+                try_default=False,
+            )
 else:
     _eval_type = typing._eval_type
 
 
 def _apply_params(obj, mapping):
-    if params := getattr(obj, "__parameters__", None):
-        args = tuple(mapping.get(p, p) for p in params)
-        return obj[args]
-    elif isinstance(obj, typing.TypeVar):
+    if isinstance(obj, typing.TypeVar):
         return mapping.get(obj, obj)
-    return obj
+
+    try:
+        parameters = tuple(obj.__parameters__)
+    except Exception:
+        # Not parameterized or __parameters__ is invalid, ignore
+        return obj
+
+    if not parameters:
+        # Not parametrized
+        return obj
+
+    # Parametrized
+    args = tuple(mapping.get(p, p) for p in parameters)
+    return obj[args]
 
 
 def _get_class_mro_and_typevar_mappings(obj):
