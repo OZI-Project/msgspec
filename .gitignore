@@ -1,3 +1,15 @@
+# OZI packaging
+subprojects/ozi/
+subprojects/ozi
+subprojects/OZI-*/
+subprojects/packagecache/OZI-*.tar.gz
+
+# OZI CI/CD
+sig/
+build*/
+/dist/
+temp/
+
 # Editor config folders
 ## Vscode
 .settings/
