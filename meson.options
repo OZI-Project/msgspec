@@ -13,7 +13,6 @@ option(
     type: 'array',
     value: [
     'OZI.build',
-    'pip-tools',
     'pipx',
     'setuptools_scm',
     ]
@@ -23,7 +22,6 @@ option(
     type: 'array',
     value: [
         'scm-version-snip', 
-        'core-metadata',
         'python',
         'metadata-version',
         'namespace',

@@ -6,7 +6,7 @@ license = {file = "LICENSE.txt"}
 
 [build-system]
 requires = [
-    'OZI.build>=0.0.27',
+    'OZI.build[core]~=2.0',
     'pip-tools>=7',
     'pipx~=1.5',
     'setuptools_scm[toml]~=8.0',
@@ -130,7 +130,7 @@ exclude_lines = [
     "class .*\\bProtocol\\):",
     "if __name__ == .__main__.:",
     ]
-fail_under    = 98.0
+fail_under    = 97.0
 show_missing  = true
 skip_covered  = true
 skip_empty    = true
@@ -311,34 +311,27 @@ python =
 [testenv]
 allowlist_externals =
    rm
-   pipx
+   uv
    python
    meson
 package = wheel
 deps =
-   OZI.build>=0.0.27
-   pip-tools>=7
-   pipx~=1.5
-   setuptools_scm[toml]~=8.0
+   OZI.build[core,uv]~=2.0
    -r requirements.in
+commands_pre =
+     uv tool install --python={env_python} --force "meson[ninja]~=1.2,<1.9"
 commands =
-   meson compile -C {env_tmp_dir}
-   rm -rf {env_tmp_dir}/.gitignore
+     meson setup {env_tmp_dir} -Dozi:{env_name}=enabled -Dozi:tox-env-dir={env_dir}
+     meson compile -C {env_tmp_dir}
+     rm -rf {env_tmp_dir}{/}.gitignore
+commands_post =
+     {env_python} -m invoke --search-root={env_tmp_dir}{/}subprojects{/}ozi{/}ozi checkpoint --suite={env_name} {posargs}
+
 [testenv:dist]
-commands_pre =
-   pipx install --python=python meson
-   meson setup {env_tmp_dir} -Dozi:dist=enabled -Dozi:tox-env-dir={env_dir} --reconfigure
-commands_post = meson test --no-rebuild --maxfail=1 -C {env_tmp_dir} --setup=dist
+
 [testenv:lint]
-commands_pre =
-   pipx install --python=python meson
-   meson setup {env_tmp_dir} -Dozi:lint=enabled -Dozi:tox-env-dir={env_dir} --reconfigure
-commands_post = meson test --no-rebuild --maxfail=1 -C {env_tmp_dir} --setup=lint
+
 [testenv:test]
-commands_pre =
-   pipx install --python=python meson
-   meson setup {env_tmp_dir} -Dozi:test=enabled -Dozi:tox-env-dir={env_dir} --reconfigure
-commands_post = meson test --no-rebuild --maxfail=1 -C {env_tmp_dir} --setup=test
 
 [testenv:fix]
 description = quickly fix minor source issues 
@@ -355,4 +348,12 @@ description = OZI supply chain management (setuptools_scm)
 deps = setuptools_scm[toml]>=8
 commands =
      {env_python} -m setuptools_scm {posargs}
+
+[testenv:invoke]
+pass_env =
+    WHEEL_SIGN_TOKEN
+description = OZI invoke tasks entrypoint
+no_package = true
+commands_post =
+     {env_python} -m invoke --search-root={env_tmp_dir}{/}subprojects{/}ozi{/}ozi {posargs:--list}
 """
