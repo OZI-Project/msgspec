@@ -23,9 +23,7 @@ def query_msgspec(data: bytes) -> list[tuple[int, str]]:
     repo_data = msgspec.json.decode(data, type=RepoData)
 
     # Sort packages by `size`, and return the top 10
-    return sorted(
-        ((p.size, p.name) for p in repo_data.packages.values()), reverse=True
-    )[:10]
+    return sorted(((p.size, p.name) for p in repo_data.packages.values()), reverse=True)[:10]
 
 
 def query_orjson(data: bytes) -> list[tuple[int, str]]:
@@ -57,9 +55,7 @@ def query_simdjson(data: bytes) -> list[tuple[int, str]]:
 
 
 # Download the current_repodata.json file
-resp = requests.get(
-    "https://conda.anaconda.org/conda-forge/noarch/current_repodata.json"
-)
+resp = requests.get("https://conda.anaconda.org/conda-forge/noarch/current_repodata.json")
 resp.raise_for_status()
 data = resp.content
 

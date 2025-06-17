@@ -1927,9 +1927,7 @@ class TestDict:
             dec.decode(b'{"apple": 1, "carrot": 2}')
 
     def test_decode_dict_str_key_constraints(self):
-        dec = msgspec.json.Decoder(
-            Dict[Annotated[str, msgspec.Meta(min_length=3)], int]
-        )
+        dec = msgspec.json.Decoder(Dict[Annotated[str, msgspec.Meta(min_length=3)], int])
         assert dec.decode(b'{"abc": 1, "def": 2}') == {"abc": 1, "def": 2}
 
         with pytest.raises(msgspec.ValidationError, match="Expected `str` of length >= 3"):

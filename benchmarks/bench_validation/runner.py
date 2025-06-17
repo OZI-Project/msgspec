@@ -24,9 +24,7 @@ encode_time = t / n
 del msg
 
 gc.collect()
-timer = timeit.Timer(
-    "func(data)", setup="", globals={"func": mod.decode, "data": json_data}
-)
+timer = timeit.Timer("func(data)", setup="", globals={"func": mod.decode, "data": json_data})
 n, t = timer.autorange()
 decode_time = t / n
 

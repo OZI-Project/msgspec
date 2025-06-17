@@ -19,8 +19,8 @@ from typing import (
     NamedTuple,
     Set,
     Tuple,
-    TypeVar,
     TypedDict,
+    TypeVar,
     Union,
 )
 

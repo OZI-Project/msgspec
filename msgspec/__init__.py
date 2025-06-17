@@ -1,4 +1,9 @@
-from msgspec._core import NODEFAULT, UNSET, DecodeError, EncodeError
+from msgspec._core import (
+    NODEFAULT,
+    UNSET,
+    DecodeError,
+    EncodeError,
+)
 from msgspec._core import Field as _Field
 from msgspec._core import (
     Meta,

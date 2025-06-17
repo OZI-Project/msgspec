@@ -111,9 +111,7 @@ class Server:
                 return sorted(self.kv)
 
     async def serve_forever(self) -> None:
-        server = await asyncio.start_server(
-            self.handle_connection, self.host, self.port
-        )
+        server = await asyncio.start_server(self.handle_connection, self.host, self.port)
         print(f"Serving on tcp://{self.host}:{self.port}...")
         async with server:
             await server.serve_forever()

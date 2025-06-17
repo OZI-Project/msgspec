@@ -119,9 +119,7 @@ def main():
 
     with tempfile.NamedTemporaryFile() as f:
         # Download the repodata.json
-        resp = requests.get(
-            "https://conda.anaconda.org/conda-forge/noarch/repodata.json"
-        )
+        resp = requests.get("https://conda.anaconda.org/conda-forge/noarch/repodata.json")
         resp.raise_for_status()
         f.write(resp.content)
 
@@ -155,9 +153,7 @@ def main():
             for lib, (mem, time) in results.items()
         ]
         rows.sort(key=lambda x: float(x[1]))
-        widths = tuple(
-            max(max(map(len, x)), len(c)) for x, c in zip(zip(*rows), columns)
-        )
+        widths = tuple(max(max(map(len, x)), len(c)) for x, c in zip(zip(*rows), columns))
         row_template = ("|" + (" %%-%ds |" * len(columns))) % widths
         header = row_template % tuple(columns)
         bar_underline = "+%s+" % "+".join("=" * (w + 2) for w in widths)

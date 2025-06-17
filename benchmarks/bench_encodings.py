@@ -98,9 +98,7 @@ def msgpack_benchmarks():
         Benchmark("msgspec structs", None, enc.encode, dec.decode, Directory),
         Benchmark("msgspec", msgspec.__version__, enc.encode, dec2.decode),
         Benchmark("msgpack", msgpack.__version__, msgpack.dumps, msgpack.loads),
-        Benchmark(
-            "ormsgpack", ormsgpack.__version__, ormsgpack.packb, ormsgpack.unpackb
-        ),
+        Benchmark("ormsgpack", ormsgpack.__version__, ormsgpack.packb, ormsgpack.unpackb),
     ]
 
 
@@ -178,9 +176,7 @@ def main():
             )
             for r in results
         ]
-        widths = tuple(
-            max(max(map(len, x)), len(c)) for x, c in zip(zip(*rows), columns)
-        )
+        widths = tuple(max(max(map(len, x)), len(c)) for x, c in zip(zip(*rows), columns))
         row_template = ("|" + (" %%-%ds |" * len(columns))) % widths
         header = row_template % tuple(columns)
         bar_underline = "+%s+" % "+".join("=" * (w + 2) for w in widths)
