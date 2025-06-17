@@ -1,8 +1,33 @@
 # Part of msgspec.
 # See LICENSE.txt in the project root for details.
 [project]
-dynamic = ["dependencies", "version"]
-license = {file = "LICENSE.txt"}
+name = "msgspec"
+dependencies = [
+    'pyyaml',
+    'tomli;python_version<"3.11"',
+    'tomli_w',
+]
+dynamic = ["version"]
+license = 'BSD-3-Clause'
+description = "A fast serialization and validation library, with builtin support for JSON, MessagePack, YAML, and TOML."
+authors = [{name='Jim Crist-Harif', email='jcristharif@gmail.com'}]
+maintainers = [{name='Eden Ross Duff MSc', email='help@oziproject.dev'}]
+requires-python = '>=3.10, <3.13'
+keywords = "JSON, msgpack, MessagePack, TOML, YAML, serialization, validation, schema"
+classifiers = [
+    'License :: OSI Approved :: BSD License',
+    'Development Status :: 1 - Planning',
+    'Programming Language :: Python :: 3 :: Only',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: Implementation :: CPython',
+    'Intended Audience :: Other Audience',
+    'Natural Language :: English',
+    'Typing :: Typed',
+    'Environment :: Other Environment',
+]
+readme = "README.md"
 
 [build-system]
 requires = [
@@ -13,13 +38,7 @@ requires = [
 ]
 build-backend = "ozi_build.buildapi"
 
-[tool.setuptools.dynamic]
-dependencies = { file = ["requirements.in"] }
-
-[tool.ozi-build.metadata]
-pkg-info-file = 'PKG-INFO'
-
-[project.optional_dependencies] # also meson test suite names
+[project.optional-dependencies] # also meson test suite names
 # OZI Packaging Dependencies
 # continuous integration
 ci   = [
@@ -71,35 +90,6 @@ test = [
 ]
 
 [tool.setuptools_scm]
-version_file_template = """Metadata-Version: 2.1
-Name: @PROJECT_NAME@
-Version: @SCM_VERSION@
-Summary: A fast serialization and validation library, with builtin support for JSON, MessagePack, YAML, and TOML.
-Home-page: https://jcristharif.com/msgspec/
-Author: Jim Crist-Harif
-Author-email: jcristharif@gmail.com
-License: @LICENSE@
-Maintainer: Eden Ross Duff MSc
-Maintainer-email: help@oziproject.dev
-Download-URL: https://github.com//msgspec/archive/refs/tags/@SCM_VERSION@.tar.gz
-Requires-Python: >=3.10, <3.13
-Keywords: JSON, msgpack, MessagePack, TOML, YAML, serialization, validation, schema 
-Classifier: License :: OSI Approved :: BSD License
-Classifier: Development Status :: 1 - Planning
-Classifier: Programming Language :: Python :: 3 :: Only
-Classifier: Programming Language :: Python :: 3.10
-Classifier: Programming Language :: Python :: 3.11
-Classifier: Programming Language :: Python :: 3.12
-Classifier: Programming Language :: Python :: Implementation :: CPython
-Classifier: Intended Audience :: Other Audience
-Classifier: Natural Language :: English
-Classifier: Typing :: Typed
-Classifier: Environment :: Other Environment
-Description-Content-Type: text/markdown
-@REQUIREMENTS_IN@
-
-@README_TEXT@"""
-version_file = "PKG-INFO"
 fallback_version = "@VCS_TAG@"
 parentdir_prefix_version = "msgspec-"
 tag_regex = "^(?P<prefix>v)?(?P<version>[^\\+]+)(?P<suffix>.*)?$"
